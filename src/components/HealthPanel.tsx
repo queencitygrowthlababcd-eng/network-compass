@@ -10,67 +10,73 @@ export function HealthPanel() {
       label: 'Latency',
       value: `${health.latency}ms`,
       icon: Activity,
+      pct: Math.min(health.latency, 100),
       color: health.latency < 30 ? 'success' : health.latency < 80 ? 'warning' : 'danger',
     },
     {
       label: 'Packet Loss',
       value: `${health.packetLoss}%`,
       icon: Zap,
+      pct: Math.min(health.packetLoss * 20, 100),
       color: health.packetLoss < 1 ? 'success' : health.packetLoss < 3 ? 'warning' : 'danger',
     },
     {
       label: 'Signal Strength',
       value: `${health.signalStrength}%`,
       icon: Wifi,
+      pct: health.signalStrength,
       color: health.signalStrength > 70 ? 'success' : health.signalStrength > 50 ? 'warning' : 'danger',
     },
   ] as const;
 
-  const colorMap = {
-    success: { dot: 'bg-success', text: 'text-success', bg: 'bg-success/10' },
-    warning: { dot: 'bg-warning', text: 'text-warning', bg: 'bg-warning/10' },
-    danger: { dot: 'bg-danger', text: 'text-danger', bg: 'bg-danger/10' },
+  const barColor = {
+    success: 'bg-success',
+    warning: 'bg-warning',
+    danger: 'bg-danger',
+  };
+
+  const textColor = {
+    success: 'text-success',
+    warning: 'text-warning',
+    danger: 'text-danger',
+  };
+
+  const bgColor = {
+    success: 'bg-success-muted',
+    warning: 'bg-warning-muted',
+    danger: 'bg-danger-muted',
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.25 }}
-      className="rounded-xl border border-border bg-card p-4 md:p-5"
+      transition={{ delay: 0.2 }}
+      className="rounded-xl border border-border bg-card p-5 shadow-card"
     >
-      <h3 className="text-sm font-semibold text-foreground mb-4">Network Health</h3>
-      <div className="space-y-4">
-        {metrics.map((m) => {
-          const c = colorMap[m.color];
-          return (
-            <div key={m.label} className="flex items-center gap-3">
-              <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${c.bg}`}>
-                <m.icon className={`h-4 w-4 ${c.text}`} />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">{m.label}</span>
-                  <span className={`text-sm font-semibold ${c.text}`}>{m.value}</span>
+      <h3 className="text-[14px] font-semibold text-foreground mb-5">Network Health</h3>
+      <div className="space-y-5">
+        {metrics.map((m) => (
+          <div key={m.label} className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className={`flex h-7 w-7 items-center justify-center rounded-md ${bgColor[m.color]}`}>
+                  <m.icon className={`h-3.5 w-3.5 ${textColor[m.color]}`} />
                 </div>
-                <div className="mt-1 h-1.5 rounded-full bg-secondary">
-                  <motion.div
-                    className={`h-full rounded-full ${c.dot}`}
-                    initial={{ width: 0 }}
-                    animate={{
-                      width: m.label === 'Signal Strength'
-                        ? `${health.signalStrength}%`
-                        : m.label === 'Latency'
-                        ? `${Math.min(health.latency, 100)}%`
-                        : `${Math.min(health.packetLoss * 20, 100)}%`,
-                    }}
-                    transition={{ duration: 0.5 }}
-                  />
-                </div>
+                <span className="text-[13px] font-medium text-foreground">{m.label}</span>
               </div>
+              <span className={`text-[13px] font-semibold ${textColor[m.color]}`}>{m.value}</span>
             </div>
-          );
-        })}
+            <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
+              <motion.div
+                className={`h-full rounded-full ${barColor[m.color]}`}
+                initial={{ width: 0 }}
+                animate={{ width: `${m.pct}%` }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </motion.div>
   );
