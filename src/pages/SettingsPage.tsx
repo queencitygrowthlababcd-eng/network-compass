@@ -17,63 +17,63 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-8 max-w-2xl mx-auto">
       <div>
-        <h2 className="text-xl font-bold text-foreground">Settings</h2>
-        <p className="text-sm text-muted-foreground">Configure monitoring preferences</p>
+        <h1 className="text-[22px] font-bold text-foreground tracking-tight">Settings</h1>
+        <p className="text-[13px] text-muted-foreground mt-1">Configure your monitoring preferences</p>
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-6"
+        className="space-y-5"
       >
-        <div className="rounded-xl border border-border bg-card p-5 space-y-5">
-          <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
+        <div className="rounded-xl border border-border bg-card p-6 shadow-card space-y-5">
+          <h3 className="text-[14px] font-semibold text-foreground">Notifications</h3>
           
-          <div className="flex items-center justify-between">
-            <Label htmlFor="notifications" className="text-sm text-muted-foreground">Enable notifications</Label>
+          <div className="flex items-center justify-between py-1">
+            <Label htmlFor="notifications" className="text-[13px] text-muted-foreground font-normal">Enable notifications</Label>
             <Switch id="notifications" checked={notifications} onCheckedChange={setNotifications} />
           </div>
-          <div className="flex items-center justify-between">
-            <Label htmlFor="unknown" className="text-sm text-muted-foreground">Unknown device alerts</Label>
+          <div className="flex items-center justify-between py-1">
+            <Label htmlFor="unknown" className="text-[13px] text-muted-foreground font-normal">Unknown device alerts</Label>
             <Switch id="unknown" checked={unknownDeviceAlerts} onCheckedChange={setUnknownDeviceAlerts} />
           </div>
-          <div className="flex items-center justify-between">
-            <Label htmlFor="bandwidth" className="text-sm text-muted-foreground">Bandwidth spike alerts</Label>
+          <div className="flex items-center justify-between py-1">
+            <Label htmlFor="bandwidth" className="text-[13px] text-muted-foreground font-normal">Bandwidth spike alerts</Label>
             <Switch id="bandwidth" checked={bandwidthAlerts} onCheckedChange={setBandwidthAlerts} />
           </div>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-5 space-y-5">
-          <h3 className="text-sm font-semibold text-foreground">Monitoring</h3>
+        <div className="rounded-xl border border-border bg-card p-6 shadow-card space-y-5">
+          <h3 className="text-[14px] font-semibold text-foreground">Monitoring</h3>
           <div className="space-y-2">
-            <Label htmlFor="refresh" className="text-sm text-muted-foreground">Refresh interval (seconds)</Label>
+            <Label htmlFor="refresh" className="text-[13px] text-muted-foreground font-normal">Refresh interval (seconds)</Label>
             <Input
               id="refresh"
               type="number"
               value={refreshRate}
               onChange={e => setRefreshRate(e.target.value)}
-              className="w-32 bg-secondary border-border"
+              className="w-32 text-[13px] bg-card border-border shadow-soft"
               min="1"
               max="30"
             />
           </div>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-5 space-y-5">
-          <h3 className="text-sm font-semibold text-foreground">Network</h3>
+        <div className="rounded-xl border border-border bg-card p-6 shadow-card space-y-5">
+          <h3 className="text-[14px] font-semibold text-foreground">Network</h3>
           <div className="space-y-2">
-            <Label className="text-sm text-muted-foreground">Network Name</Label>
-            <Input defaultValue="Office-LAN-5G" className="bg-secondary border-border" />
+            <Label className="text-[13px] text-muted-foreground font-normal">Network Name</Label>
+            <Input defaultValue="Office-LAN-5G" className="text-[13px] bg-card border-border shadow-soft" />
           </div>
           <div className="space-y-2">
-            <Label className="text-sm text-muted-foreground">Gateway IP</Label>
-            <Input defaultValue="192.168.1.1" className="bg-secondary border-border font-mono" />
+            <Label className="text-[13px] text-muted-foreground font-normal">Gateway IP</Label>
+            <Input defaultValue="192.168.1.1" className="text-[13px] bg-card border-border shadow-soft font-mono" />
           </div>
         </div>
 
-        <Button onClick={handleSave} className="w-full sm:w-auto">
+        <Button onClick={handleSave} size="sm" className="shadow-sm text-[13px]">
           Save Settings
         </Button>
       </motion.div>

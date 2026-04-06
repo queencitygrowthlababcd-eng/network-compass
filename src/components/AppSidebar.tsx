@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
+  SidebarFooter,
   useSidebar,
 } from '@/components/ui/sidebar';
 
@@ -26,39 +27,37 @@ export function AppSidebar() {
   const { unreadAlerts, health } = useNetwork();
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className="p-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-            <Wifi className="h-5 w-5 text-primary" />
+    <Sidebar collapsible="icon" className="border-r border-border bg-card">
+      <SidebarHeader className="px-4 py-5">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary">
+            <Wifi className="h-4 w-4 text-primary-foreground" />
           </div>
           {!collapsed && (
-            <div>
-              <h1 className="text-sm font-semibold text-foreground">NetWatch</h1>
-              <p className="text-xs text-muted-foreground">LAN Monitor</p>
-            </div>
+            <span className="text-[15px] font-semibold tracking-tight text-foreground">NetWatch</span>
           )}
         </div>
       </SidebarHeader>
-      <SidebarContent>
+
+      <SidebarContent className="px-3">
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-0.5">
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink
                       to={item.url}
                       end={item.url === '/'}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                      activeClassName="bg-primary/10 text-primary font-medium"
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground transition-all duration-150 hover:bg-secondary hover:text-foreground"
+                      activeClassName="bg-primary-muted text-primary"
                     >
-                      <item.icon className="h-4 w-4 shrink-0" />
+                      <item.icon className="h-[18px] w-[18px] shrink-0" />
                       {!collapsed && (
                         <span className="flex-1">{item.title}</span>
                       )}
                       {!collapsed && item.title === 'Alerts' && unreadAlerts > 0 && (
-                        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1.5 text-[10px] font-bold text-danger-foreground">
+                        <span className="flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-danger px-1 text-[10px] font-semibold text-danger-foreground">
                           {unreadAlerts}
                         </span>
                       )}
@@ -69,25 +68,24 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        {!collapsed && (
-          <div className="mt-auto p-4">
-            <div className="rounded-lg border border-border bg-secondary/50 p-3">
-              <div className="flex items-center gap-2 mb-1">
-                <div className={`h-2 w-2 rounded-full ${
-                  health.status === 'Good' ? 'bg-success status-pulse' :
-                  health.status === 'Moderate' ? 'bg-warning status-pulse' :
-                  'bg-danger status-pulse'
-                }`} />
-                <span className="text-xs font-medium text-foreground">Network {health.status}</span>
-              </div>
-              <p className="text-[10px] text-muted-foreground">
-                Latency: {health.latency}ms · Loss: {health.packetLoss}%
-              </p>
-            </div>
-          </div>
-        )}
       </SidebarContent>
+
+      {!collapsed && (
+        <SidebarFooter className="px-4 py-4">
+          <div className="rounded-lg border border-border bg-secondary/50 p-3">
+            <div className="flex items-center gap-2 mb-1">
+              <div className={`h-2 w-2 rounded-full ${
+                health.status === 'Good' ? 'bg-success' :
+                health.status === 'Moderate' ? 'bg-warning' : 'bg-danger'
+              }`} />
+              <span className="text-xs font-medium text-foreground">Network {health.status}</span>
+            </div>
+            <p className="text-[11px] text-muted-foreground">
+              {health.latency}ms latency · {health.packetLoss}% loss
+            </p>
+          </div>
+        </SidebarFooter>
+      )}
     </Sidebar>
   );
 }
