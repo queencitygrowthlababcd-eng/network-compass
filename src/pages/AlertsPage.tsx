@@ -60,7 +60,7 @@ export default function AlertsPage() {
                     {new Date(alert.timestamp).toLocaleString()}
                   </p>
                 </div>
-              </motion.tr>
+              </motion.div>
             );
           })}
         </AnimatePresence>
